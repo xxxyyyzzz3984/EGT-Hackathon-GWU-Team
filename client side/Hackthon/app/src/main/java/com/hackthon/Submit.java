@@ -26,23 +26,23 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
         setContentView(R.layout.ac_sign_in);
 
         final EditText editEmail = (EditText) findViewById(R.id.editEmail);
-        final EditText editPassword = (EditText) findViewById(R.id.editPassword);
+        //final EditText editPassword = (EditText) findViewById(R.id.editPassword);
 
         final ProgressGenerator progressGenerator = new ProgressGenerator(this);
-        final ActionProcessButton btnSignIn = (ActionProcessButton) findViewById(R.id.btnSignIn);
+        final ActionProcessButton btnSbt = (ActionProcessButton) findViewById(R.id.btnSbt);
         Bundle extras = getIntent().getExtras();
         if(extras != null && extras.getBoolean(EXTRAS_ENDLESS_MODE)) {
-            btnSignIn.setMode(ActionProcessButton.Mode.ENDLESS);
+            btnSbt.setMode(ActionProcessButton.Mode.ENDLESS);
         } else {
-            btnSignIn.setMode(ActionProcessButton.Mode.PROGRESS);
+            btnSbt.setMode(ActionProcessButton.Mode.PROGRESS);
         }
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        btnSbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressGenerator.start(btnSignIn);
-                btnSignIn.setEnabled(false);
+                progressGenerator.start(btnSbt);
+                btnSbt.setEnabled(false);
                 editEmail.setEnabled(false);
-                editPassword.setEnabled(false);
+               // editPassword.setEnabled(false);
             }
         });
     }

@@ -3,7 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="dummy_email">jondoe@gmail.com</string>
     <string name="dummy_password">123456789</string>
-    <string name="Sign_in">Sign in</string>
+    <string name="Submit">Submit</string>
     <string name="Success">Success</string>
     <string name="Loading">Loading..</string>
     <string name="Question">How are you?</string>

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:float="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_marginLeft="32dp"
@@ -11,28 +12,43 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:inputType="textEmailAddress"
-            android:text="@string/dummy_email" />
 
-        <EditText
-            android:id="@+id/editPassword"
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:inputType="textPassword"
-            android:text="@string/dummy_password" />
+            float:fletPadding="10dp">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editEmail"
+                android:hint="Username"
+                android:layout_marginBottom="16dp"
+                android:inputType="textEmailAddress" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+
+        <!--
+        <com.wrapp.floatlabelededittext.FloatLabeledEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            float:fletPaddingBottom="10dp">
+
+            <EditText
+                android:id="@+id/editPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:layout_marginBottom="16dp"
+                android:inputType="textPassword" />
+        </com.wrapp.floatlabelededittext.FloatLabeledEditText>
+        -->
 
         <com.dd.processbutton.iml.ActionProcessButton
-            android:id="@+id/btnSignIn"
+            android:id="@+id/btnSbt"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/Sign_in"
+            android:text="@string/Submit"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             custom:pb_colorComplete="@color/green_complete"
@@ -41,6 +57,7 @@
             custom:pb_colorProgress="@color/purple_progress"
             custom:pb_textComplete="@string/Success"
             custom:pb_textProgress="@string/Loading" />
+
 
     </LinearLayout>
 
