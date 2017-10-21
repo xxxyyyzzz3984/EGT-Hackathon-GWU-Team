@@ -3,14 +3,28 @@
     xmlns:float="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginLeft="32dp"
-    android:layout_marginRight="32dp">
+    >
+
+    <com.flaviofaria.kenburnsview.KenBurnsView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Twitter Analysis App"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="40sp"
+            android:layout_marginBottom="90dp"/>
 
 
         <com.wrapp.floatlabelededittext.FloatLabeledEditText
@@ -24,6 +38,8 @@
                 android:id="@+id/editusername"
                 android:hint="Username"
                 android:layout_marginBottom="16dp"
+                android:textSize="25sp"
+                android:textAlignment="center"
                 android:inputType="textEmailAddress" />
         </com.wrapp.floatlabelededittext.FloatLabeledEditText>
 
@@ -46,11 +62,11 @@
         <com.dd.processbutton.iml.ActionProcessButton
             android:id="@+id/btnSbt"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="fill_parent"
             android:layout_marginBottom="16dp"
             android:text="@string/Submit"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="30sp"
             custom:pb_colorComplete="@color/green_complete"
             custom:pb_colorNormal="@color/blue_normal"
             custom:pb_colorPressed="@color/blue_pressed"

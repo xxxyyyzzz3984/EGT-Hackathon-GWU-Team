@@ -19,19 +19,20 @@
         <activity
             android:name="com.hackthon.Submit"
             android:configChanges="orientation|screenSize|smallestScreenSize"
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@style/ActivityStyle" />
+
         <activity
             android:name="com.hackthon.setting"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@style/ActivityStyle" />
         <activity
             android:name="com.hackthon.history"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@style/ActivityStyle" />
         <activity
             android:name="com.hackthon.results"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Holo.Light" />
+            android:theme="@style/ActivityStyle" />
     </application>
 
 </manifest>

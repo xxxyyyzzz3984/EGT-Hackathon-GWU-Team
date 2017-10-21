@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.hackthon"
@@ -26,4 +26,5 @@ dependencies {
     compile project(path: ':library')
     compile 'com.wrapp.floatlabelededittext:library:0.0.6'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    compile 'com.flaviofaria:kenburnsview:1.0.7'
 }

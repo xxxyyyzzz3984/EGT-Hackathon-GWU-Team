@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.hackthon.utils.ProgressGenerator;
 
 
@@ -39,6 +40,10 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_sign_in);
+
+        KenBurnsView kbv = (KenBurnsView) findViewById(R.id.image);
+
+
 
         usernameedittext = (EditText) findViewById(R.id.editusername);
         //final EditText editPassword = (EditText) findViewById(R.id.editPassword);
