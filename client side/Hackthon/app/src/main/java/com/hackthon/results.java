@@ -8,8 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -17,6 +21,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 
@@ -29,6 +34,8 @@ public class results extends Activity {
 
     //protected Typeface mTfLight;
     private PieChart chart;
+    private BarChart barchart1;
+    private BarChart barchart2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +43,37 @@ public class results extends Activity {
 
         //mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
         chart = (PieChart) findViewById(R.id.piechart);
+        barchart1 = (BarChart) findViewById(R.id.barchart1);
+        barchart2 = (BarChart) findViewById(R.id.barchar2);
+        ArrayList<BarEntry> barEntries1 = new ArrayList<>();
+        ArrayList<BarEntry> barEntries2 = new ArrayList<>();
+        barEntries1.add(new BarEntry(1,44f));
+        barEntries1.add(new BarEntry(2,55f));
+        barEntries1.add(new BarEntry(3,30f));
+        barEntries1.add(new BarEntry(4,55f));
+        barEntries1.add(new BarEntry(5,22f));
+        barEntries2.add(new BarEntry(1,44f));
+        barEntries2.add(new BarEntry(2,55f));
+        barEntries2.add(new BarEntry(3,30f));
+        barEntries2.add(new BarEntry(4,55f));
+        barEntries2.add(new BarEntry(5,22f));
+        BarDataSet barDataSet1 = new BarDataSet(barEntries1,"Dates");
+        BarDataSet barDataSet2 = new BarDataSet(barEntries2,"Dates");
+
+        BarData theData1 = new BarData(barDataSet1);
+        BarData theData2 = new BarData(barDataSet2);
+        theData1.setBarWidth(0.9f);
+        theData2.setBarWidth(0.9f);
+        barchart1.setData(theData1);
+        barchart2.setData(theData2);
+
+        barchart1.setTouchEnabled(true);
+        barchart1.setDragEnabled(true);
+        barchart1.setScaleEnabled(true);
+        barchart2.setTouchEnabled(true);
+        barchart2.setDragEnabled(true);
+        barchart2.setScaleEnabled(true);
+
         setpiedata(4,100);
     }
 
@@ -121,14 +159,15 @@ public class results extends Activity {
 
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
+        data.setValueTextSize(14f);
         data.setValueTextColor(Color.WHITE);
  //       data.setValueTypeface(mTfLight);
         chart.setData(data);
 
         // undo all highlights
         chart.highlightValues(null);
-
+        chart.setTouchEnabled(true);
+        chart.setVerticalScrollBarEnabled(true);
         chart.invalidate();
     }
 
