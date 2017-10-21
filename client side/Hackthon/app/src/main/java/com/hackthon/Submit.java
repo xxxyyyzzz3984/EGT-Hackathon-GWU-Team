@@ -5,7 +5,10 @@ package com.hackthon;
  */
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -42,14 +45,48 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                 progressGenerator.start(btnSbt);
                 btnSbt.setEnabled(false);
                 editEmail.setEnabled(false);
-               // editPassword.setEnabled(false);
+                starthistory();
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mymenu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.history:
+                Toast.makeText(this,"history clicked",Toast.LENGTH_SHORT).show();
+                starthistory();
+                break;
+            case R.id.setting:
+                Toast.makeText(this,"setting clecked",Toast.LENGTH_SHORT).show();
+                startsetting();
+                break;
+        }
+        return true;
     }
 
     @Override
     public void onComplete() {
         Toast.makeText(this, R.string.Loading_Complete, Toast.LENGTH_LONG).show();
+    }
+    private void startresults(){
+        Intent intent = new Intent(this,results.class);
+        startActivity(intent);
+    }
+    private void startsetting(){
+        Intent intent = new Intent(this,setting.class);
+        startActivity(intent);
+    }
+    private void starthistory(){
+        Intent intent = new Intent(this,history.class);
+        startActivity(intent);
     }
 
 }
