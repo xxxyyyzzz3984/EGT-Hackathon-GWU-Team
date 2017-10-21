@@ -16,10 +16,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
+        setContentView(R.layout.ac_sign_in);
+       // initView();
+        startSubmit(true);
     }
-
+    private void startSubmit(boolean isEndlessMode) {
+        Intent intent = new Intent(this, Submit.class);
+        intent.putExtra(Submit.EXTRAS_ENDLESS_MODE, isEndlessMode);
+        startActivity(intent);
+    }
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
        getMenuInflater().inflate(R.menu.mymenu,menu);
@@ -69,5 +75,5 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,history.class);
         startActivity(intent);
     }
-
+*/
 }

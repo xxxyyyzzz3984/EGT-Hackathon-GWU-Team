@@ -21,7 +21,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editEmail"
+                android:id="@+id/editusername"
                 android:hint="Username"
                 android:layout_marginBottom="16dp"
                 android:inputType="textEmailAddress" />
