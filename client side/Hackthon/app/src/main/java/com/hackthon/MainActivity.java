@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    public static boolean judgeprocess = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.ac_sign_in);
        // initView();
         startSubmit(true);
+        this.finish();
     }
     private void startSubmit(boolean isEndlessMode) {
         Intent intent = new Intent(this, Submit.class);

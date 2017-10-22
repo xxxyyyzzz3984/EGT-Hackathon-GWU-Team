@@ -72,7 +72,9 @@
             custom:pb_colorPressed="@color/blue_pressed"
             custom:pb_colorProgress="@color/purple_progress"
             custom:pb_textComplete="@string/Success"
-            custom:pb_textProgress="@string/Loading" />
+            custom:pb_textProgress="@string/Loading"
+            custom:pb_textError="User Not Exist"
+            custom:pb_colorError="@color/red_error"/>
 
 
     </LinearLayout>

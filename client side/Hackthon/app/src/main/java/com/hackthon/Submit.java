@@ -37,7 +37,8 @@ import java.util.concurrent.Exchanger;
 
 public class Submit extends Activity implements ProgressGenerator.OnCompleteListener {
 
-    public static final String EXTRAS_ENDLESS_MODE = "EXTRAS_ENDLESS_MODE";
+    public static final String EXTRAS_ENDLESS_MODE = null ;
+    private ActionProcessButton btnSbt;
     private EditText usernameedittext;
     EditText msgTextField;
     private String mUserName = "";
@@ -54,7 +55,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
         //final EditText editPassword = (EditText) findViewById(R.id.editPassword);
 
         final ProgressGenerator progressGenerator = new ProgressGenerator(this);
-        final ActionProcessButton btnSbt = (ActionProcessButton) findViewById(R.id.btnSbt);
+        btnSbt = (ActionProcessButton)findViewById(R.id.btnSbt);
         Bundle extras = getIntent().getExtras();
         if(extras != null && extras.getBoolean(EXTRAS_ENDLESS_MODE)) {
             btnSbt.setMode(ActionProcessButton.Mode.ENDLESS);
@@ -65,8 +66,8 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
             @Override
             public void onClick(View v) {
                 progressGenerator.start(btnSbt);
-                btnSbt.setEnabled(false);
-                usernameedittext.setEnabled(false);
+                btnSbt.setEnabled(true);
+                usernameedittext.setEnabled(true);
                 mUserName = usernameedittext.getText().toString();
                 // send data thread
                 new Thread(new Runnable() {
@@ -108,13 +109,14 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 
     @Override
     public void onComplete() {
-        Toast.makeText(this, R.string.Loading_Complete, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, R.string.Loading_Complete, Toast.LENGTH_LONG).show();
 //        startresults();
 //        sendrequest();
     }
     private void startresults(){
         Intent intent = new Intent(this,results.class);
         startActivity(intent);
+        this.finish();
     }
     private void startsetting(){
         Intent intent = new Intent(this,setting.class);
@@ -146,11 +148,32 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
             out.write(QueryInfo.toString().getBytes());
             out.flush();
 
-            System.out.println("Waiting for data");
+
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             String content = IOStreamProcessing.readStream(in);
-            System.out.println("Data got");
-            System.out.println(content);
+            System.out.println("content len :" + content.length());
+            System.out.println("content: " + content);
+            if(content.length()<5) {
+                System.out.println("wrong response");
+                MainActivity.judgeprocess = false;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnSbt.setProgress(-1);
+                    }
+                });
+            }
+            // up to here we got the data from server, loading should be end here and move to new activity
+            else {
+                MainActivity.judgeprocess = false;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnSbt.setProgress(0);
+                    }
+                });
+                startresults();
+            }
         }
 
         finally {
