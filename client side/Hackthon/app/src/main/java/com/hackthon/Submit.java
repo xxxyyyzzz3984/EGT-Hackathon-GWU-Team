@@ -83,7 +83,8 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                     @Override
                     public void run() {
                         try {
-                            SendRequest();
+//                            SendRequest();
+                            startresults();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -207,15 +208,15 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                 " \"trump\": 1}, \"top5negwords\": {\"warned\": 1, \"discourage\": 1, \"uncertain\": 1, \"killed\": 2, \"myth\": 1}, " +
                 "\"location\": \"NewYorkCity/Worldwide\", \"negative_percentage\": 0.10796445608139038, \"negwords_percent\": 0.6, " +
                 "\"profile_image_link\": \"https://pbs.twimg.com/profile_images/877547979363758080/ny06RNTT_400x400.jpg\"," +
-                " \"criminal_alert\": 0}";
+                " \"criminal_alert\": 1}";
 
         JSONObject jObject = new JSONObject(content);
-//        TargetName = jObject.getString("target_name");
+        TargetName = jObject.getString("target_name");
         ProfileImgLink = jObject.getString("profile_image_link");
         NumPosWords = jObject.getInt("total_poswords");
         NumNegWords = jObject.getInt("total_negwords");
-        NegWordPercent = Float.parseFloat(jObject.getString("negwords_percent"));
-        PosWordPercent = Float.parseFloat(jObject.getString("poswords_percent"));
+        NegWordPercent = Float.parseFloat(jObject.getString("negwords_percent")) * 100;
+        PosWordPercent = Float.parseFloat(jObject.getString("poswords_percent")) * 100;
 
         JSONObject Poswords_jsobj = jObject.getJSONObject("top5poswords");
         JSONObject Negwords_jsobj = jObject.getJSONObject("top5negwords");
@@ -223,7 +224,6 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 
         for(int i = 0; i<Poswords_jsobj.names().length(); i++){
             Poswords_jsobj.get(Poswords_jsobj.names().getString(i));
-
             Top5PosWords.put(Poswords_jsobj.names().getString(i), Poswords_jsobj.getInt(Poswords_jsobj.names().getString(i)));
         }
 
@@ -232,8 +232,8 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
             Top5NegWords.put(Negwords_jsobj.names().getString(i), Negwords_jsobj.getInt(Negwords_jsobj.names().getString(i)));
         }
 
-        PostivePercent = Float.parseFloat(jObject.getString("pos_percentage"));
-        NegativePercent = Float.parseFloat(jObject.getString("negative_percentage"));
+        PostivePercent = Float.parseFloat(jObject.getString("pos_percentage")) * 100;
+        NegativePercent = Float.parseFloat(jObject.getString("negative_percentage")) * 100;
         isCriminal = jObject.getInt("criminal_alert");
     }
 }
