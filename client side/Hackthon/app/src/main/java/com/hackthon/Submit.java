@@ -6,6 +6,7 @@ package com.hackthon;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,9 +19,13 @@ import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.hackthon.utils.ProgressGenerator;
 
 
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -35,6 +40,9 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
     public static final String EXTRAS_ENDLESS_MODE = "EXTRAS_ENDLESS_MODE";
     private EditText usernameedittext;
     EditText msgTextField;
+    private String mUserName = "";
+    private String mServerIP = "192.168.1.155";
+    private String mServerPort = "44444";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,9 +50,6 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
         setContentView(R.layout.ac_sign_in);
 
         KenBurnsView kbv = (KenBurnsView) findViewById(R.id.image);
-
-
-
         usernameedittext = (EditText) findViewById(R.id.editusername);
         //final EditText editPassword = (EditText) findViewById(R.id.editPassword);
 
@@ -62,6 +67,18 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                 progressGenerator.start(btnSbt);
                 btnSbt.setEnabled(false);
                 usernameedittext.setEnabled(false);
+                mUserName = usernameedittext.getText().toString();
+                // send data thread
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            SendRequest();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
 
             }
         });
@@ -92,8 +109,8 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
     @Override
     public void onComplete() {
         Toast.makeText(this, R.string.Loading_Complete, Toast.LENGTH_LONG).show();
-        startresults();
-        sendrequest();
+//        startresults();
+//        sendrequest();
     }
     private void startresults(){
         Intent intent = new Intent(this,results.class);
@@ -108,40 +125,41 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
         startActivity(intent);
     }
 
-    protected void sendrequest(){
-        String msg = usernameedittext.getText().toString();
-        String urlString = "http://192.168.1.155:44444";
-        String data ="{\"username\":\""+msg+"\"}";
-        OutputStream out = null;
-        if(msg.length()>0) {
 
-           // HttpClient httpclient = new DefaultHttpClient();
-            //HttpPost httppost = new HttpPost("http://192.168.1.155:4444");
-            try {
+    private void SendRequest() throws Exception{
+        //make json file
+        JSONObject QueryInfo = new JSONObject();
+        QueryInfo.put("username", mUserName);
 
-                URL url = new URL(urlString);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoInput(true);
-                urlConnection.setDoOutput(true);
-                out = new BufferedOutputStream(urlConnection.getOutputStream());
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out,"UTF-8"));
-                writer.write(data);
-                writer.flush();
-                writer.close();
-                out.close();
-                urlConnection.connect();
-                Toast.makeText(getBaseContext(),data,Toast.LENGTH_SHORT).show();
-                System.out.println(data);
+        URL url = new URL("http://" + mServerIP + ":" + mServerPort);
+        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        try {
+            int length = QueryInfo.toString().getBytes().length;
+            System.out.println("The length is " + length);
+            System.out.println(length);
+            urlConnection.setRequestProperty("Content-Length", Integer.toString(length + 4));
+            urlConnection.setRequestMethod("POST");
+            urlConnection.setDoOutput(true);
+            urlConnection.setChunkedStreamingMode(0);
 
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            //display message if text field is empty
-            Toast.makeText(getBaseContext(),"All fields are required",Toast.LENGTH_SHORT).show();
+            OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
+            out.write(QueryInfo.toString().getBytes());
+            out.flush();
+
+            System.out.println("Waiting for data");
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            String content = IOStreamProcessing.readStream(in);
+            System.out.println("Data got");
+            System.out.println(content);
+        }
+
+        finally {
+            System.out.println("Connection terminated");
+            urlConnection.disconnect();
         }
 
     }
+
+
 
 }
