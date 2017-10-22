@@ -83,7 +83,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                     @Override
                     public void run() {
                         try {
-//                            SendRequest();
+                            SendRequest();
                             startresults();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -94,11 +94,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
             }
         });
 
-        try {
-            parse_response();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -189,6 +185,8 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                         btnSbt.setProgress(0);
                     }
                 });
+                System.out.println(content);
+                parse_response(content);
                 startresults();
             }
         }
@@ -200,15 +198,15 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 
     }
 
-    public void parse_response() throws JSONException {
-        String content = "{\"target_name\"=\"Little Donalad\", \"bio\": \"See the whole picture with @ABC News. Facebook: " +
-                "https://www.facebook.com/abcnews\\u00a0 Instagram: https://www.instagram.com/abcnews\\u00a0\"," +
-                " \"poswords_percent\": 0.4, \"pos_percentage\": 0.8920354843139648, \"total_negwords\": 12," +
-                " \"total_poswords\": 8, \"top5poswords\": {\"unity\": 1, \"work\": 1, \"relief\": 2, \"optimism\": 1," +
-                " \"trump\": 1}, \"top5negwords\": {\"warned\": 1, \"discourage\": 1, \"uncertain\": 1, \"killed\": 2, \"myth\": 1}, " +
-                "\"location\": \"NewYorkCity/Worldwide\", \"negative_percentage\": 0.10796445608139038, \"negwords_percent\": 0.6, " +
-                "\"profile_image_link\": \"https://pbs.twimg.com/profile_images/877547979363758080/ny06RNTT_400x400.jpg\"," +
-                " \"criminal_alert\": 1}";
+    public void parse_response(String content) throws JSONException {
+//        String content = "{\"target_name\"=\"Little Donalad\", \"bio\": \"See the whole picture with @ABC News. Facebook: " +
+//                "https://www.facebook.com/abcnews\\u00a0 Instagram: https://www.instagram.com/abcnews\\u00a0\"," +
+//                " \"poswords_percent\": 0.4, \"pos_percentage\": 0.8920354843139648, \"total_negwords\": 12," +
+//                " \"total_poswords\": 8, \"top5poswords\": {\"unity\": 1, \"work\": 1, \"relief\": 2, \"optimism\": 1," +
+//                " \"trump\": 1}, \"top5negwords\": {\"warned\": 1, \"discourage\": 1, \"uncertain\": 1, \"killed\": 2, \"myth\": 1}, " +
+//                "\"location\": \"NewYorkCity/Worldwide\", \"negative_percentage\": 0.10796445608139038, \"negwords_percent\": 0.6, " +
+//                "\"profile_image_link\": \"https://pbs.twimg.com/profile_images/877547979363758080/ny06RNTT_400x400.jpg\"," +
+//                " \"criminal_alert\": 1}";
 
         JSONObject jObject = new JSONObject(content);
         TargetName = jObject.getString("target_name");
@@ -221,7 +219,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
         JSONObject Poswords_jsobj = jObject.getJSONObject("top5poswords");
         JSONObject Negwords_jsobj = jObject.getJSONObject("top5negwords");
 
-
+        
         for(int i = 0; i<Poswords_jsobj.names().length(); i++){
             Poswords_jsobj.get(Poswords_jsobj.names().getString(i));
             Top5PosWords.put(Poswords_jsobj.names().getString(i), Poswords_jsobj.getInt(Poswords_jsobj.names().getString(i)));
