@@ -6,7 +6,6 @@ package com.hackthon;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,20 +18,16 @@ import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.hackthon.utils.ProgressGenerator;
 
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Exchanger;
+import java.util.HashMap;
 
 
 public class Submit extends Activity implements ProgressGenerator.OnCompleteListener {
@@ -40,15 +35,29 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
     public static final String EXTRAS_ENDLESS_MODE = null ;
     private ActionProcessButton btnSbt;
     private EditText usernameedittext;
-    EditText msgTextField;
     private String mUserName = "";
     private String mServerIP = "192.168.1.155";
     private String mServerPort = "44444";
+    public static String TargetName = "";
+    public static String ProfileImgLink = "";
+    public static int NumPosWords;
+    public static int NumNegWords;
+    public static float PosWordPercent;
+    public static float NegWordPercent;
+    public static HashMap<String, Integer> Top5PosWords;
+    public static HashMap<String, Integer> Top5NegWords;
+    public static float PostivePercent;
+    public static float NegativePercent;
+    public static int isCriminal;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_sign_in);
+
+        Top5PosWords = new HashMap<>();
+        Top5NegWords = new HashMap<>();
 
         KenBurnsView kbv = (KenBurnsView) findViewById(R.id.image);
         usernameedittext = (EditText) findViewById(R.id.editusername);
@@ -83,6 +92,12 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 
             }
         });
+
+        try {
+            parse_response();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,6 +128,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 //        startresults();
 //        sendrequest();
     }
+
     private void startresults(){
         Intent intent = new Intent(this,results.class);
         startActivity(intent);
@@ -163,7 +179,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                     }
                 });
             }
-            // up to here we got the data from server, loading should be end here and move to new activity
+
             else {
                 MainActivity.judgeprocess = false;
                 runOnUiThread(new Runnable() {
@@ -183,6 +199,41 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
 
     }
 
+    public void parse_response() throws JSONException {
+        String content = "{\"target_name\"=\"Little Donalad\", \"bio\": \"See the whole picture with @ABC News. Facebook: " +
+                "https://www.facebook.com/abcnews\\u00a0 Instagram: https://www.instagram.com/abcnews\\u00a0\"," +
+                " \"poswords_percent\": 0.4, \"pos_percentage\": 0.8920354843139648, \"total_negwords\": 12," +
+                " \"total_poswords\": 8, \"top5poswords\": {\"unity\": 1, \"work\": 1, \"relief\": 2, \"optimism\": 1," +
+                " \"trump\": 1}, \"top5negwords\": {\"warned\": 1, \"discourage\": 1, \"uncertain\": 1, \"killed\": 2, \"myth\": 1}, " +
+                "\"location\": \"NewYorkCity/Worldwide\", \"negative_percentage\": 0.10796445608139038, \"negwords_percent\": 0.6, " +
+                "\"profile_image_link\": \"https://pbs.twimg.com/profile_images/877547979363758080/ny06RNTT_400x400.jpg\"," +
+                " \"criminal_alert\": 0}";
+
+        JSONObject jObject = new JSONObject(content);
+//        TargetName = jObject.getString("target_name");
+        ProfileImgLink = jObject.getString("profile_image_link");
+        NumPosWords = jObject.getInt("total_poswords");
+        NumNegWords = jObject.getInt("total_negwords");
+        NegWordPercent = Float.parseFloat(jObject.getString("negwords_percent"));
+        PosWordPercent = Float.parseFloat(jObject.getString("poswords_percent"));
+
+        JSONObject Poswords_jsobj = jObject.getJSONObject("top5poswords");
+        JSONObject Negwords_jsobj = jObject.getJSONObject("top5negwords");
 
 
+        for(int i = 0; i<Poswords_jsobj.names().length(); i++){
+            Poswords_jsobj.get(Poswords_jsobj.names().getString(i));
+
+            Top5PosWords.put(Poswords_jsobj.names().getString(i), Poswords_jsobj.getInt(Poswords_jsobj.names().getString(i)));
+        }
+
+        for(int i = 0; i<Negwords_jsobj.names().length(); i++){
+            Negwords_jsobj.get(Negwords_jsobj.names().getString(i));
+            Top5NegWords.put(Negwords_jsobj.names().getString(i), Negwords_jsobj.getInt(Negwords_jsobj.names().getString(i)));
+        }
+
+        PostivePercent = Float.parseFloat(jObject.getString("pos_percentage"));
+        NegativePercent = Float.parseFloat(jObject.getString("negative_percentage"));
+        isCriminal = jObject.getInt("criminal_alert");
+    }
 }
