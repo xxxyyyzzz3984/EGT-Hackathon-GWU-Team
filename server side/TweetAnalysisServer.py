@@ -6,7 +6,6 @@ import operator
 import simplejson
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from classify_text import TextClassifier
-import numpy as np
 
 positive_words_filepath = "./train data/positive-words.txt"
 negative_words_filepath = "./train data/negative-words.txt"
@@ -131,11 +130,6 @@ class TwitterCrawl:
 
                 next_data_pos = json_data['min_position']
 
-    # def CriminalityAnalysis(self):
-    #
-    #     for post_info in self.posts_info:
-    #         post_info["post_content"]
-
     def posts_simple_analysis(self):
         if self.target_name == "":
             self.return_info = dict()
@@ -216,7 +210,7 @@ class S(BaseHTTPRequestHandler):
         username = json_data["username"]
         print "receive username " + username
         print "Process requests and analyzing ......"
-        twittercrawl = TwitterCrawl(username, 0)
+        twittercrawl = TwitterCrawl(username, 2)
         twittercrawl.posts_simple_analysis()
         twittercrawl.CriminalityAnalysis()
         print "Processing finished, sending data......"
@@ -231,31 +225,4 @@ def run(server_class=HTTPServer, handler_class=S, port=44444):
     httpd.serve_forever()
 
 run()
-# tweetcrawl = TwitterCrawl("abc", 0)
-# tweetcrawl.posts_simple_analysis()
-# tweetcrawl.CriminalityAnalysis()
-# username = 'muftimenk'
-# crawl_times = 0
-# tweetcrawl = TwitterCrawl(username, crawl_times)
-# print tweetcrawl.target_name
-# test_string = ['zest', 'zest', 'zippy', 'zeal']
-# negative_words = dict()
-# positive_words = dict()
-# all_negative_words = []
-# all_positive_words = []
-# with open(positive_words_filepath) as positive_f:
-#     for line in positive_f:
-#         line = line.replace('\n', '').replace(' ', '')
-#         all_positive_words.append(line.lower())
-#
-# for post_word in test_string:
-#     if post_word in all_positive_words:
-#         post_word = post_word.lower()
-#         if post_word not in positive_words:
-#             positive_words[post_word] = 1
-#         else:
-#             positive_words[post_word] += 1
-#
-# post_analysis = dict()
-# post_analysis["top_words"] = positive_words
-# print post_analysis
+

@@ -210,7 +210,7 @@ public class Submit extends Activity implements ProgressGenerator.OnCompleteList
                 " \"criminal_alert\": 0}";
 
         JSONObject jObject = new JSONObject(content);
-//        TargetName = jObject.getString("target_name");
+        TargetName = jObject.getString("target_name");
         ProfileImgLink = jObject.getString("profile_image_link");
         NumPosWords = jObject.getInt("total_poswords");
         NumNegWords = jObject.getInt("total_negwords");
