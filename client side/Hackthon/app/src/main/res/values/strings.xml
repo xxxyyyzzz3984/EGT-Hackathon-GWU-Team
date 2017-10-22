@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hackthon</string>
+    <string name="app_name">Twitter Analysis</string>
     <string name="action_settings">Settings</string>
     <string name="dummy_email">jondoe@gmail.com</string>
     <string name="dummy_password">123456789</string>
